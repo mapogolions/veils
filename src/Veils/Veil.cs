@@ -5,8 +5,8 @@ namespace Veils;
 public class Veil<T> where T : class
 {
     private readonly T _origin;
-    private bool _pierced;
     private readonly IEnumerable<KeyValuePair<string, object>> _data;
+    private bool _pierced;
 
     public Veil(T origin, params KeyValuePair<string, object>[] data)
     {
