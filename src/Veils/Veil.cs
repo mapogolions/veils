@@ -5,10 +5,10 @@ namespace Veils;
 public class Veil<T> where T : class
 {
     private readonly T _origin;
-    private readonly IEnumerable<KeyValuePair<string, object>> _data;
+    private readonly IEnumerable<(string, object)> _data;
     private bool _pierced;
 
-    public Veil(T origin, params KeyValuePair<string, object>[] data)
+    public Veil(T origin, params (string, object)[] data)
     {
         _origin = origin;
         _data = data;
@@ -20,11 +20,12 @@ public class Veil<T> where T : class
         {
             if (!_pierced)
             {
-                var item = _data.FirstOrDefault(x => string.Equals(x.Key, propName, StringComparison.Ordinal));
-                if (item.Value is not null)
+                var pair = _data.FirstOrDefault(x => string.Equals(x.Item1, propName, StringComparison.Ordinal));
+                if (pair.Item2 is not null)
                 {
-                    return item.Value;
+                    return pair.Item2;
                 }
+                _pierced = true;
             }
             var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknow property name: {propName}");
             return propInfo.GetValue(_origin);
@@ -32,7 +33,9 @@ public class Veil<T> where T : class
 
         set
         {
-            _pierced = true;
+            if (!_pierced) _pierced = true;
+            var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknow property name: {propName}");
+            propInfo.SetValue(_origin, value);
         }
     }
 
@@ -43,5 +46,11 @@ public class Veil<T> where T : class
             throw new InvalidOperationException();
         }
         return (TField)(this[memExpr.Member.Name]!);
+    }
+
+    public void Set(Action<T> configure)
+    {
+        if (!_pierced) _pierced = true;
+        configure(_origin);
     }
 }
