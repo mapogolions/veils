@@ -7,61 +7,77 @@ namespace Veils.Tests;
 public class VeilTests
 {
     [Fact]
+    public void SetValueShouldThrowExceptionIfPropertyIsNotFoundInOrigin()
+    {
+        var veiled = new Veil<Book>(new() { Isbn = 1L, Title = "foo" });
+
+        Assert.Throws<ArgumentException>(() => veiled["isbn"]);
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionIfTypesAreNotCompatible()
+    {
+        var veiled = new Veil<Book>(new() { Isbn = 2L, Title = "foo" });
+
+        Assert.Throws<ArgumentException>(() => veiled["Isbn"] = "invalid date type");
+    }
+
+    [Fact]
     public void ShouldGetPropertyValueFromOriginIfVeilIsPierced()
     {
-        var veiledBook = new Veil<Book>(new() { Isbn = 256L, Title = "foo" }, ("Isbn", 257L));
+        var veiled = new Veil<Book>(new() { Isbn = 1L, Title = "foo" }, ("Isbn", 2L));
 
-        Assert.Equal(257L, veiledBook["Isbn"]);
-        Assert.Equal("foo", veiledBook["Title"]);
-        Assert.Equal(256L, veiledBook["Isbn"]);
+        Assert.Equal(2L, veiled["Isbn"]);
+        Assert.Equal("foo", veiled["Title"]);
+        Assert.Equal(1L, veiled["Isbn"]);
     }
 
     [Fact]
     public void ShouldGetTypedPropertyValueFromOrigin()
     {
-        var veiledBook = new Veil<Book>(new() { Isbn = 256L, Title = null });
+        var veiled = new Veil<Book>(new() { Isbn = 1L, Title = null });
 
-        var isbn = veiledBook.Get<long>(x => x.Isbn);
-        var title = veiledBook.Get<string?>(x => x.Title);
+        var isbn = veiled.Get<long>(x => x.Isbn);
+        var title = veiled.Get<string?>(x => x.Title);
 
         Assert.Null(title);
-        Assert.Equal(256L, isbn);
+        Assert.Equal(1L, isbn);
     }
 
     [Fact]
     public void ShouldGetPropertyValueFromVeil()
     {
-        var veiledBook = new Veil<Book>(
-            new() { Isbn = 256, Title = "foo" },
-            (nameof(Book.Isbn), 257L),
+        var veiled = new Veil<Book>(
+            new() { Isbn = 1L, Title = "foo" },
+            (nameof(Book.Isbn), 2L),
             (nameof(Book.Title), "bar"));
 
-        Assert.Equal(257L, veiledBook["Isbn"]);
-        Assert.Equal("bar", veiledBook["Title"]);
+        Assert.Equal(2L, veiled["Isbn"]);
+        Assert.Equal("bar", veiled["Title"]);
     }
 
     [Fact]
     public void PropertyAccessShouldBeCaseSensitive()
     {
-        var veiledBook = new Veil<Book>(new());
+        var veiled = new Veil<Book>(new());
 
-        Assert.Throws<ArgumentException>(() => veiledBook["isbn"]);
+        Assert.Throws<ArgumentException>(() => veiled["isbn"]);
     }
 
     [Fact]
     public void ShouldThrowExceptionIfPropertyNameIsNotFoundInOrigin()
     {
-        var veiledBook = new Veil<Book>(new());
+        var veiled = new Veil<Book>(new());
 
-        Assert.Throws<ArgumentException>(() => veiledBook["UnknowPropetyName"]);
+        Assert.Throws<ArgumentException>(() => veiled["UnknowPropetyName"]);
     }
 
     [Fact]
     public void ShouldGetPropertyValueFromOrigin()
     {
-        var veiledBook = new Veil<Book>(new() { Isbn = 256, Title = "foo" });
+        var veiled = new Veil<Book>(new() { Isbn = 1L, Title = "foo" });
 
-        Assert.Equal(256L, veiledBook["Isbn"]);
-        Assert.Equal("foo", veiledBook["Title"]);
+        Assert.Equal(1L, veiled["Isbn"]);
+        Assert.Equal("foo", veiled["Title"]);
     }
 }

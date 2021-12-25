@@ -48,9 +48,9 @@ public class Veil<T> where T : class
         return (TField)(this[memExpr.Member.Name]!);
     }
 
-    public void Set(Action<T> configure)
+    public void Set(Action<T> mutate)
     {
         if (!_pierced) _pierced = true;
-        configure(_origin);
+        mutate(_origin);
     }
 }
