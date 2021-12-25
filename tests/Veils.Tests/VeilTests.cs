@@ -19,7 +19,7 @@ public class VeilTests
     {
         var veiled = new Veil<Book>(new() { Isbn = 2L, Title = "foo" });
 
-        Assert.Throws<ArgumentException>(() => veiled["Isbn"] = "invalid date type");
+        Assert.Throws<ArgumentException>(() => veiled["Isbn"] = "invalid type");
     }
 
     [Fact]
