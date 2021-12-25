@@ -7,6 +7,20 @@ namespace Veils.Tests;
 public class VeilTests
 {
     [Fact]
+    public void ShouldHandlerGetFunctionProperty()
+    {
+        var veiled = new Veil<Person>(
+            new() { FirstName = "Jane", LastName = "Doe" },
+            new("FirstName", "Some"),
+            new("FullName", "Some One"));
+
+        Assert.Equal("Some", veiled.Get(_ => _.FirstName));
+        Assert.Equal("Some One", veiled.Get(_ => _.FullName));
+        Assert.Equal("Doe", veiled.Get(_ => _.LastName));
+        Assert.Equal("Jane Doe", veiled.Get(_ => _.FullName));
+    }
+
+    [Fact]
     public void SetValueShouldThrowExceptionIfPropertyIsNotFoundInOrigin()
     {
         var veiled = new Veil<Book>(new() { Isbn = 1L, Title = "foo" });
@@ -37,8 +51,8 @@ public class VeilTests
     {
         var veiled = new Veil<Book>(new() { Isbn = 1L, Title = null });
 
-        var isbn = veiled.Get<long>(x => x.Isbn);
-        var title = veiled.Get<string?>(x => x.Title);
+        var isbn = veiled.Get<long>(_ => _.Isbn);
+        var title = veiled.Get<string?>(_ => _.Title);
 
         Assert.Null(title);
         Assert.Equal(1L, isbn);
