@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Books>
+  <Book>
+    <Isbn>ABCD</Isbn>
+    <Title>Book1</Title>
+    <Author>Jane Doe</Author>
+  </Book>
+  <Book>
+    <Isbn>DCBA</Isbn>
+    <Title>Book2</Title>
+    <Author>John Doe</Author>
+  </Book>
+</Books>
