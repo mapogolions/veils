@@ -16,8 +16,3 @@ foreach (var book in books)
         book.Isbn, book.Title, book.Author);
     Console.WriteLine(bookInfo);
 }
-
-    // var book = books.First(x => x.Isbn == "ABCD");
-    // Console.WriteLine(book.Title);
-    // book.Title = "Functional programming";
-    // Console.WriteLine(book.Title);
