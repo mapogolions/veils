@@ -12,7 +12,7 @@ var books = new XmlBooks(
 
 foreach (var book in books)
 {
-    var bookInfo = string.Format("Book(Isbn = {0}, Title = {0}, Author = {0})",
+    var bookInfo = string.Format("Book(Isbn = {0}, Title = {1}, Author = {2})",
         book.Isbn, book.Title, book.Author);
     Console.WriteLine(bookInfo);
 }
