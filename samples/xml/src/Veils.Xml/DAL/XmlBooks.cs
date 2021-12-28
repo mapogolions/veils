@@ -14,12 +14,14 @@ public class XmlBooks : IBooks
     public IEnumerable<IBook> All()
     {
         return _source.XmlDoc.Root?.Elements("Book").Select(book => {
-            var isbn = book.Element("Isbn")?.Value ?? throw new InvalidDataException();;
-            var attrs = book.Elements().Select(el => (el.Name.LocalName, (object)el.Value));
+            var isbn = book.Element("Isbn")?.Value ?? throw new InvalidDataException();
+            var title = book.Element("Title")?.Value ?? throw new InvalidDataException();
+            var author = book.Element("Author")?.Value ?? throw new InvalidDataException();
             return new Book(
                 new Veil<IBook>(
                     new XmlBook(isbn, _source),
-                    attrs.ToArray()
+                    ("Title", title),
+                    ("Author", author)
                 )
             );
         }) ?? Enumerable.Empty<IBook>();
