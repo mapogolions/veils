@@ -27,14 +27,14 @@ public class Veil<T> where T : class
                 }
                 _pierced = true;
             }
-            var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknow property name: {propName}");
+            var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknown property name: {propName}");
             return propInfo.GetValue(_origin);
         }
 
         set
         {
             if (!_pierced) _pierced = true;
-            var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknow property name: {propName}");
+            var propInfo = _origin.GetType().GetProperty(propName) ?? throw new ArgumentException($"Unknown property name: {propName}");
             propInfo.SetValue(_origin, value);
         }
     }

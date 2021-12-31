@@ -8,7 +8,7 @@ namespace Veils.Xml.Tests;
 public class VeilXmlTest
 {
     [Fact]
-    public void ShouldGetValueFromXmlDocumentIfOriginIsPierced()
+    public void ShouldGetValueFromXmlDocumentIfVeilIsPierced()
     {
         var document = XDocument.Parse(_xml);
         var books = new XmlBooks(

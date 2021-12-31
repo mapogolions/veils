@@ -83,7 +83,7 @@ public class VeilTests
     {
         var veiled = new Veil<Book>(new());
 
-        Assert.Throws<ArgumentException>(() => veiled["UnknowPropetyName"]);
+        Assert.Throws<ArgumentException>(() => veiled["UnknownPropetyName"]);
     }
 
     [Fact]
